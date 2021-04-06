@@ -14,17 +14,22 @@ import {
 
 
 export default BooksLibraryScreen = ({ navigation }) => {
-    const BooksState = useSelector((state) => state.books);
 
     const dispatch = useDispatch()
- 
+    const [books, setBooks] = useState()
+    const LocalBooks = useSelector((state) => state.books).NewBooks;
     const [isLoading, setLoading] = useState(false)
 
     const colorScheme = useColorScheme();
 
     useEffect(() => {
-       console.log('reducer', BooksState.Books);
-        dispatch(GetBooksAction())
+
+        dispatch(GetBooksAction()).then(res => {
+            var AllBooks=[...res,LocalBooks]
+            console.log(AllBooks);
+           // setBooks(AllBooks)
+        })
+
 
     }, [])
 
@@ -60,8 +65,8 @@ export default BooksLibraryScreen = ({ navigation }) => {
                 <>
                     <FlatList
 
-                        data={BooksState.Books}
-                        extraData={BooksState.Books}
+                        data={books}
+                        extraData={books}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={_renderItem}
                         onEndReachedThreshold={1}
@@ -81,7 +86,7 @@ export default BooksLibraryScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: hp(15.5)
+        paddingBottom: hp(2)
     },
 
 });

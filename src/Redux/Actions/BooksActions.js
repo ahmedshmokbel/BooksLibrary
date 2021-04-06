@@ -2,7 +2,7 @@ import { get_request } from '../../Network/networkLayer'
 import { ADD_BOOKS, GET_BOOKS, GET_BOOKS_FAILED, GET_BOOKS_SUCCESS, } from '../Types';
 
 
-export const GetBooksAction = () => async dispatch => {
+export const GetBooksAction = (currentList) => async dispatch => {
 
 
 
@@ -13,6 +13,7 @@ export const GetBooksAction = () => async dispatch => {
             get_request(`volumes?q=flowers+inauthor:keyes&&startIndex=0&&maxResults=2&&key=AIzaSyCxW6RZ3FseYeYxmvm3nw78E0a_93if7Jw`)
                 .then(res => {
                     var BooksArray = res.items.map(item => {
+
 
                         return {
                             // ...item,
@@ -26,11 +27,10 @@ export const GetBooksAction = () => async dispatch => {
                         }
                     })
 
-                    console.log(BooksArray);
-                    dispatch({
-                        type: GET_BOOKS_SUCCESS,
-                        Books: BooksArray,
-                    });
+                    //  dispatch({
+                    //     type: GET_BOOKS_SUCCESS,
+                    //     Books: BooksArray,
+                    // });
                     resolve(BooksArray)
 
                 })
@@ -49,7 +49,7 @@ export const GetBooksAction = () => async dispatch => {
 
 
 
-export const AddNewBookAction = (Title, date, Image, Description) => dispatch => {
+export const AddNewBookAction = (Title, date, Image, Description) =>async dispatch => {
 
     var book = { volumeInfo: { title: Title, publishedDate: date, imageLinks: { thumbnail: Image }, description: Description } }
     dispatch({

@@ -110,13 +110,10 @@ export default AddNewBook = ({ navigation }) => {
 
 
 
-
     const _AddNewBook = (Title, date, Image, Description) => {
-        dispatch(AddNewBookAction(Title, date, Image, Description)).then(
-            () => {
-                navigation.goBack()
-            }
-        )
+        dispatch(AddNewBookAction(Title, date, Image, Description)).then(() => {
+            navigation.goBack()
+        })
 
     }
 
@@ -130,27 +127,20 @@ export default AddNewBook = ({ navigation }) => {
 
                 <Formik
                     initialValues={{
-                        Title: '', date: '', Description: ''
+                        Title: 'hhhs', date: 'sjsjs', Description: 'shshsh'
                     }}
                     innerRef={formikRef}
                     enableReinitialize={true}
                     validationSchema={validateBookData}
                     onSubmit={(values, actions) => {
-                        console.log('dd', Img);
-                        if (Img === undefined) {
-                            console.log('dd', Img);
-                            setImgError(true)
-                        } else {
-                            _AddNewBook(values.Title, values.date, Img, values.Description)
-                        }
-
+                        _AddNewBook(values.Title, values.date, Img, values.Description)
                     }}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, setFieldValue }) => (
                         <React.Fragment>
                             {Img === undefined ?
                                 <TouchableOpacity onPress={() => createThreeButtonAlert()}>
-                                    <Image source={require('../assets/noimage.png')} style={{ alignSelf: 'center', borderRadius: 20, borderColor: imgError ? 'red' : '#F8F8F8', borderWidth: 1, marginTop: 10 }} />
+                                    <Image source={require('../assets/noimage.png')} style={{ alignSelf: 'center', borderRadius: 20, marginTop: 10 }} />
 
                                 </TouchableOpacity>
                                 :
@@ -158,11 +148,7 @@ export default AddNewBook = ({ navigation }) => {
                                     <Image source={{ uri: Img }} style={{ width: 250, height: 250, borderRadius: 20, alignSelf: 'center', marginTop: 10 }} />
 
                                 </TouchableOpacity>}
-                            {imgError &&
-                                <View style={{ marginHorizontal: wp(10), top: Platform.OS == 'ios' ? hp(35.5) : hp(35.0), position: 'absolute', zIndex: 200 }} >
-                                    <ErrorText message={'Choose an Image'} />
-                                </View>
-                            }
+
 
 
                             <View style={{

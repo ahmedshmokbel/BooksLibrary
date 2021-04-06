@@ -4,8 +4,9 @@ import {
 
 const initialState = {
 
-    Books: [],
+    NewBooks: [],
     isLoading: false,
+
 
 };
 const BooksReducer = (state = initialState, action) => {
@@ -42,7 +43,7 @@ const BooksReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                Books: [...state.Books, action.Book]
+                NewBooks: [...state.NewBooks, action.Book]
             }
 
 
