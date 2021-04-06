@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, } from 'react';
 import { View, StyleSheet, ScrollView, Image, Platform, Alert, TouchableOpacity } from "react-native";
 import { useColorScheme } from 'react-native-appearance';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import CustomButton from '../Components/CustomBotton'
@@ -17,8 +17,7 @@ import {
     removeOrientationListener as rol,
 } from 'react-native-responsive-screen';
 import { AddNewBookAction } from '../Redux/Actions/BooksActions';
-
-
+import { ThemeStyle } from '../Utilities/Theme';
 
 
 
@@ -27,11 +26,8 @@ export default AddNewBook = ({ navigation }) => {
     const [Img, setImage] = useState();
     const dispatch = useDispatch()
 
-    const [imgError, setImgError] = useState(false)
     const formikRef = useRef();
 
-
-    console.log('img', Img);
 
     useEffect(() => {
 
@@ -44,7 +40,7 @@ export default AddNewBook = ({ navigation }) => {
 
         );
         if (status !== 'granted') {
-            alert('Hey! You have not enabled selected permissions');
+           
         }
     }
 
@@ -57,7 +53,6 @@ export default AddNewBook = ({ navigation }) => {
             quality: 1,
         });
 
-        console.log(result);
         if (!result.cancelled) {
 
             setImage(result.uri)
@@ -118,12 +113,12 @@ export default AddNewBook = ({ navigation }) => {
     }
 
     return (
-        <View>
+        <View style={[{ flex: 1 }, colorScheme == 'light' ? ThemeStyle.lightContainer : ThemeStyle.darkContainer]}>
             <Header title={'Add New Book'} hasLeft={true} goBack={() => {
                 navigation.goBack()
 
             }} />
-            <ScrollView>
+            <ScrollView >
 
                 <Formik
                     initialValues={{

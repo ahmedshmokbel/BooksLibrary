@@ -18,22 +18,29 @@ export default BooksLibraryScreen = ({ navigation }) => {
     const dispatch = useDispatch()
     const [books, setBooks] = useState()
     const LocalBooks = useSelector((state) => state.books).NewBooks;
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(false);
 
     const colorScheme = useColorScheme();
 
     useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            GetBooks()
+        });
+        return () => {
+            unsubscribe();
+        };
+    }, [LocalBooks]);
 
+
+    const GetBooks = () => {
+
+        setLoading(true);
         dispatch(GetBooksAction()).then(res => {
-            var AllBooks=[...res,LocalBooks]
-            console.log(AllBooks);
-           // setBooks(AllBooks)
+            var AllBooks = [...res, ...LocalBooks].sort((a, b) => a.title == b.title ? 1 : -1)
+            setBooks(AllBooks)
+            setLoading(false)
         })
-
-
-    }, [])
-
-
+    }
 
     const _renderItem = ({ item, index }) => {
 
@@ -59,21 +66,23 @@ export default BooksLibraryScreen = ({ navigation }) => {
 
             }} />
             <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
-                {isLoading &&
-                    <ActivityIndicator size='large' color='black' />
-                }
-                <>
+                {isLoading ?
+                    <ActivityIndicator color='red' size='large' />
+                    :
+
                     <FlatList
 
                         data={books}
+                        numColumns={2}
                         extraData={books}
+                        contentContainerStyle={{ paddingBottom: hp(15.5)}}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={_renderItem}
                         onEndReachedThreshold={1}
+
                     />
 
-                </>
-
+                }
             </View>
 
         </View >
@@ -86,7 +95,8 @@ export default BooksLibraryScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: hp(2)
+       
+        
     },
 
 });

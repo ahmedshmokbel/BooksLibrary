@@ -1,13 +1,9 @@
 import { get_request } from '../../Network/networkLayer'
-import { ADD_BOOKS, GET_BOOKS, GET_BOOKS_FAILED, GET_BOOKS_SUCCESS, } from '../Types';
+import { ADD_BOOKS, } from '../Types';
 
 
-export const GetBooksAction = (currentList) => async dispatch => {
+export const GetBooksAction = () => async dispatch => {
 
-
-
-    const API_KEY = process.env.REACT_APP_BOOKS_API_KEY;
-    console.log(API_KEY);
     return new Promise((resolve, reject) => {
         try {
             get_request(`volumes?q=flowers+inauthor:keyes&&startIndex=0&&maxResults=2&&key=AIzaSyCxW6RZ3FseYeYxmvm3nw78E0a_93if7Jw`)
@@ -16,31 +12,22 @@ export const GetBooksAction = (currentList) => async dispatch => {
 
 
                         return {
-                            // ...item,
-                            volumeInfo: {
-                                title: item.volumeInfo.title,
-                                publishedDate: item.volumeInfo.publishedDate,
-                                imageLinks: { thumbnail: item.volumeInfo.imageLinks.thumbnail },
-                                description: item.volumeInfo.description
-                            }
 
+                            title: item.volumeInfo.title,
+                            publishedDate: item.volumeInfo.publishedDate,
+                            thumbnail: item.volumeInfo.imageLinks.thumbnail,
+                            description: item.volumeInfo.description
                         }
                     })
-
-                    //  dispatch({
-                    //     type: GET_BOOKS_SUCCESS,
-                    //     Books: BooksArray,
-                    // });
                     resolve(BooksArray)
-
-                })
+                 })
                 .catch(err => {
                     console.log(' error:', err)
-                    dispatch({ type: GET_BOOKS_FAILED })
+
 
                 })
         } catch (err) {
-            dispatch({ type: GET_BOOKS_FAILED })
+
             reject(err);
         }
     });
@@ -49,11 +36,12 @@ export const GetBooksAction = (currentList) => async dispatch => {
 
 
 
-export const AddNewBookAction = (Title, date, Image, Description) =>async dispatch => {
+export const AddNewBookAction = (Title, date, Image, Description) => async dispatch => {
 
-    var book = { volumeInfo: { title: Title, publishedDate: date, imageLinks: { thumbnail: Image }, description: Description } }
+    var book = { title: Title, publishedDate: date, thumbnail: Image, description: Description }
     dispatch({
         type: ADD_BOOKS,
         Book: book,
     });
+
 }

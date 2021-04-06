@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Dimensions, Platform, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, Platform, View, Image, StyleSheet } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 import { ThemeStyle } from '../../Utilities/Theme';
 import {
@@ -14,28 +14,28 @@ const BooksComponent = (props) => {
     const colorScheme = useColorScheme()
     colorSchemeStyle = colorScheme
     return (
-        <View onPress={props.onPress} style={[styles.rederItems, { height: props.volumeInfo.description ? hp(35) : hp(20) }]}
+        <View onPress={props.onPress} style={[styles.rederItems, { backgroundColor: colorScheme === 'light' ? '#e4433f' : 'grey', height: props.description ? hp(48) : hp(35) }]}
             key={props.index}>
 
-            {props.volumeInfo.imageLinks === undefined ?
-                <Image resizeMode='contain'
-                source={require('../../assets/noimage.png')}
-                style={[styles.Img, { height: props.volumeInfo.description ? hp(20) : hp(15) }]}
+            {props.thumbnail === undefined ?
+                <Image resizeMode='cover'
+                    source={require('../../assets/noimage.png')}
+                    style={[styles.Img, { height: props.description ? hp(20) : hp(10) }]}
                 /> :
 
                 <Image
-                    source={{ uri: props.volumeInfo.imageLinks.thumbnail }}
-                    style={[styles.Img, { height: props.volumeInfo.description ? hp(20) : hp(15) }]} resizeMode='contain'
+                    source={{ uri: props.thumbnail }}
+                    style={[styles.Img, { height: props.description ? hp(25) : hp(25) }]} resizeMode='contain'
                 />}
 
-            <View style={{ marginTop: hp(5), marginHorizontal: wp(2) }} >
-                <Text numberOfLines={6} lineBreakMode='clip' ellipsizeMode='clip' style={[{ width: wp(55), textAlign: 'left', fontSize: 15, fontWeight: 'bold', }, colorScheme === 'light' ? ThemeStyle.lightThemeText : ThemeStyle.darkThemeText]}>{props.volumeInfo.title}</Text>
-                <Text style={[{ textAlign: 'left', fontSize: 15, fontWeight: 'bold', }, colorScheme === 'light' ? ThemeStyle.lightThemeText : ThemeStyle.darkThemeText]}>{props.volumeInfo.publishedDate}</Text>
+            <View style={{ alignItems: 'center', marginTop: hp(3.5), marginHorizontal: wp(2) }} >
+                <Text numberOfLines={6} lineBreakMode='clip' ellipsizeMode='clip' style={[{ width: wp(55), textAlign: 'center', fontSize: 15, fontWeight: 'bold', }, colorScheme === 'light' ? ThemeStyle.lightThemeText : ThemeStyle.darkThemeText]}>{props.title}</Text>
+                <Text style={[{ textAlign: 'left', fontSize: 15, fontWeight: 'bold', }, colorScheme === 'light' ? ThemeStyle.lightThemeText : ThemeStyle.darkThemeText]}>{props.publishedDate}</Text>
 
             </View>
-            {props.volumeInfo.description &&
+            {props.description &&
                 <View style={styles.footer}>
-                    <Text numberOfLines={6} lineBreakMode='clip' ellipsizeMode='clip' style={[{ width: wp(80), textAlign: 'left', fontSize: 15, fontWeight: 'bold', }, colorScheme === 'light' ? ThemeStyle.lightThemeText : ThemeStyle.darkThemeText]}>{props.volumeInfo.description}</Text>
+                    <Text numberOfLines={6} lineBreakMode='clip' ellipsizeMode='clip' style={[{ width: wp(40), textAlign: 'center', fontSize: Platform.OS == 'ios' ? 13 : 10, fontWeight: 'bold', }, colorScheme === 'light' ? ThemeStyle.lightThemeText : ThemeStyle.darkThemeText]}>{props.description}</Text>
 
                 </View>
             }
@@ -48,15 +48,16 @@ export default BooksComponent
 const styles = StyleSheet.create({
 
     rederItems: {
-        marginTop: hp(5),
-        flexDirection: 'row',
+        marginTop: hp(2),
+        marginHorizontal: wp(1.5),
+        alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: colorSchemeStyle === 'light' ? 'f7d9d9' : '#f7d9d9',
+
 
 
         ...Platform.select({
             ios: {
-                width: wp(90),
+                width: wp(45),
                 shadowColor: "#000",
                 shadowOffset: {
                     width: 0,
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
             },
             android: {
                 //  width: 390,
-                width: '95%',
+                width: wp(45),
                 elevation: 3.5,
 
             },
@@ -81,11 +82,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         ...Platform.select({
             ios: {
-                width: wp(35),
+                width: wp(40),
 
             },
             android: {
-                width: '100%',
+                width: wp(40),
             },
         }),
 
