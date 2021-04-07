@@ -122,7 +122,7 @@ export default AddNewBook = ({ navigation }) => {
 
                 <Formik
                     initialValues={{
-                        Title: 'hhhs', date: 'sjsjs', Description: 'shshsh'
+                        Title: '', date: '', Description: ''
                     }}
                     innerRef={formikRef}
                     enableReinitialize={true}
